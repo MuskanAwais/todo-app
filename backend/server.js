@@ -45,11 +45,16 @@ app.post("/todos", async (req, res) => {
 // ========================
 app.patch("/todos/:id", async (req, res) => {
   const { id } = req.params
-  const { completed } = req.body
+  const { title, completed } = req.body
+
+  let updateData = {}
+
+  if (title !== undefined) updateData.title = title
+  if (completed !== undefined) updateData.completed = completed
 
   const { data, error } = await supabase
     .from("todos")
-    .update({ completed })
+    .update(updateData)
     .eq("id", id)
     .select()
 
